@@ -1,4 +1,4 @@
-# Kyuris (WIP)
+# Kyuris
 
 **Kyuris** is a lightweight, easy-to-use framework for the **[Eris](https://npmjs.com/package/eris)** library.
 
