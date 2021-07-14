@@ -1,0 +1,34 @@
+{
+  "name": "kyuris",
+  "version": "0.1.0",
+  "description": "An Easy-To-Use Framework For The Eris Library",
+  "main": "Kyuris.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NotMarx/kyuris.git"
+  },
+  "keywords": [
+    "eris",
+    "framework",
+    "eris-framework",
+    "discord",
+    "discord-api",
+    "kyuris"
+  ],
+  "author": "reinhardt",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/NotMarx/kyuris/issues"
+  },
+  "homepage": "https://kyuris.js.org",
+  "dependencies": {
+    "chalk": "^4.1.1",
+    "eris": "^0.15.1",
+    "juration": "^0.1.1",
+    "moment": "^2.29.1",
+    "readdirp": "^3.6.0"
+  }
+}
