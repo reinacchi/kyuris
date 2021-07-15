@@ -9,35 +9,47 @@ export class Client extends Eris.Client {
 
     constructor(token: string, options?: KyurisClientOptions);
 
-    commands: Eris.Collection;
-    events: Set;
-    kyurisOptions: KyurisClientOptions;
-    token: string;
+    public commands: Eris.Collection<Command>;
+    public events: Set<Event>;
+    public kyurisHandler: KyurisHandler;
+    public kyurisOptions: KyurisClientOptions;
+    public token: string;
 
 }
 
 export class Command {
 
-    aliases: Array<string>;
-    allowInDMs?: boolean;
-    cooldown?: number;
-    meta?: object;
-    name: string;
-    nsfw?: boolean;
-    owner?: boolean;
-    permissions?: Array<string>;
-    subcommands?: Array<string>;
-    userPermissions?: Array<string>;
+    constructor();
 
-    run(client: Client, message: Eris.Message<Eris.TextableChannel>, args: Array<string>): Promise<void>;
+    public aliases: Array<string>;
+    public allowInDMs?: boolean;
+    public cooldown?: number;
+    public meta?: MetaOptions;
+    public name: string;
+    public nsfwOnly?: boolean;
+    public ownerOnly?: boolean;
+    public permissions?: Array<string>;
+    public subcommands?: Array<string>;
+    public userPermissions?: Array<string>;
+
+    public run(client: Client, message: Eris.Message<Eris.TextableChannel>, args: Array<string>): Promise<void>;
 
 }
 
-export class Event {
+export class Event<T> {
 
-    constructor(eventName: Eris.ClientEvents);
+    constructor(eventName: Eris.ClientEvents<T>);
 
-    private _eventName = eventName;
+    private _eventName: string;
+}
+
+export class KyurisHandler {
+
+    constructor(kyuris: Client);
+
+    public kyuris: Client;
+    public cooldowns: Eris.Collection;
+    public defaultPermissions: Array<string>;
 
 }
 
@@ -88,10 +100,20 @@ export class RichEmbed {
 interface KyurisClientOptions extends Eris.ClientOptions {
     enablePresence?: boolean;
     ignoreAllBots?: boolean;
-    ownerID?: Array<srting>;
+    ownerID?: Array<string>;
     prefix?: string | Array<string>;
     presences?: Eris.ActivityPartial<Eris.BotActivityType>;
     status?: Eris.Status;
+}
+
+interface MetaOptions {
+
+    category?: string;
+    description?: string;
+    nsfwOnly?: boolean;
+    ownerOnly?: boolean;
+    usage?: string;
+
 }
 
 type ColorResolvable =
