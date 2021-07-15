@@ -51,6 +51,8 @@ export class KyurisHandler {
     public cooldowns: Eris.Collection;
     public defaultPermissions: Array<string>;
 
+    public handleMessage(message: Eris.Message<Eris.TextableChannel>, commands: Eris.Collection<Command>): Promise<void | Eris.Message<Eris.TextableChannel>>
+
 }
 
 export class Logger {
@@ -96,6 +98,8 @@ export class RichEmbed {
     public addField(name: string, value: string, inline?: boolean): RichEmbed;
 
 }
+
+export const VERSION: string;
 
 interface KyurisClientOptions extends Eris.ClientOptions {
     enablePresence?: boolean;
