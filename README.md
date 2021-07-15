@@ -6,6 +6,8 @@
 
 - **Kyuris** supports any kinda of project structure. With this way, it's much customizable and you can still able to follow your own scripting style! 
 
+**Note:** It's not needed setup `messageCreate` and `ready` events as **Kyuris** has already handle them in order to works. 
+
 An Example Of a Project Structure:
 
 ```
@@ -16,13 +18,13 @@ Discord-Bot/
 │   │   └── Ping.js
 │
 ├── Events/
-│   └── Ready.js/
+│   └── ShardPreReady.js/
 │
 └── index.js
 
 ```
 
-`index.js` File:
+## `index.js` File:
 
 ```js
 const Kyuris = require("kyuris");
@@ -55,7 +57,7 @@ module.exports = new MyBot();
 
 That's it? Yes but no. We also need to setup a commands for your bot. **Kyuris.Client** has 2 parameters, `token` and `KyurisOptions`. We need to filled out `token` in order for the bot to connect to the Discord gateway and `KyurisOptions` as an optional things for the bot. `prefix` property inside the `KyurisOptions` is required for your bot to work. `KyurisOptions` is also an extended options for `Eris.ClientOptions` as shown above example. Now, let's move to the next step.
 
-`Commands/General/Ping.js` File:
+## `Commands/General/Ping.js` File:
 
 ```js
 
@@ -94,11 +96,46 @@ module.exports = new PingCommand();
 
 This time, we're creating a command in a command file. You'll need to pass the `name` property for the command name and this is required. Any other properties are optional. To run the command, we're going to use a function called `run`. This method has 3 parameters. They are `Kyuris.Client` client (An extended Client of Eris.Client), `Eris.Message` message, and `Array<String>` args.  
 
+## `Events/ShardPreReady.js` File:
+
+```js
+
+const Kyuris = require("kyuris");
+
+class ShardPreReady extends Kyuris.Event {
+
+    constructor() {
+
+        /* Eris's Events. See https://abal.moe/Eris/Client and head to the Events section for more */
+        super("shardPreReady");
+
+    }
+
+    /**
+     * @param {number} id The shard ID
+     */
+    async run(id) {
+
+        Kyuris.Logger.info("KYURIS - SHARD-PRE-READY", `Shard ${id} Has Successfully Connected!`);
+
+    }
+
+}
+
+```
+
 - **That's It!** Your bot is now fully setup and ready to go as long as you didn't forgot to save your files :P
 
-# Documentation
+# Resources Links
 
-- Soon™
+- **Kyuris' Official Docs** is currently W.I.P.
+- **[Kyuris' Official GitHub Repo](https://github.com/NotMarx/kyuris)** is where the primary development occurs.
+- **[Kyuris' Support Server](https://discord.gg/78RyqJK)** is where you can get support within the framework or get in contact with me.
+
+# ToDo List:
+
+- Custom `ready` & `messageCreate` Events (`messageCreate` event is where Kyuris handles messages and commands. Making a custom `messageCreate` event **isn't recommended** at all unless you know what you're doing.)
+- More properties
 
 # License
 
