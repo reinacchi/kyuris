@@ -11,7 +11,7 @@ class ExampleBot extends Kyuris.Client {
                 type: 0
             },
             enablePresence: true,
-            ownerID: ["516186529547288576"]
+            ownerID: ["OwnerID"]
         });
 
     }
