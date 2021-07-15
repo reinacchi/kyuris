@@ -91,7 +91,7 @@ class KyurisHandler {
             }
         }
 
-        if (command.owner && !kyurisConfig.ownerID.includes(message.author.id)) {
+        if (command.ownerOnly && !kyurisConfig.ownerID.includes(message.author.id)) {
 
             return this.kyuris.createMessage(message.channel.id, { content: KyurisMessages.LIBRARY.ACCESS_DENIED });
 
@@ -99,7 +99,7 @@ class KyurisHandler {
 
         if (message.channel.type === 0) {
 
-            if (command.nsfw && !message.channel.nsfw) {
+            if (command.nsfwOnly && !message.channel.nsfw) {
 
                 let onlyNSFWEmbed = new RichEmbed()
                     .setDescription(KyurisMessages.LIBRARY.NOT_IN_NSFW.replace("{command}", command.name))

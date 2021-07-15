@@ -16,9 +16,8 @@ class KyurisClient extends Eris.Client {
      * @param {String} token The bot's token
      * @param {Object} [kyurisOptions] Kyuris Options
      * @param {Boolean} [kyurisOptions.enablePresence=false] Whether to enable game presence or not
-     * @param {String | Array<String>} [kyurisOptions.guildPrefixes] The bot's prefix in a guild.
      * @param {Boolean} [kyurisOptions.ignoreAllBots=true] Whether to ignore all bot accounts or not
-     * @param {String | Array<String>} [kyurisOptions.prefix] The bot prefix. Use an array of prefixes strings.
+     * @param {String | Array<String>} [kyurisOptions.prefix="@mention "] The bot prefix. Use an array of prefixes strings.
      * @param {Array<String>} [kyurisOptions.ownerID] An array of the bot's owner ID
      * @param {Eris.ActivityPartial<Eris.BotActivityType>} [kyurisOptions.presences={}] A presence object
      * @param {String} [kyurisOptions.presences.name="with Kyuris"] The name of the bot's presence game
@@ -31,13 +30,13 @@ class KyurisClient extends Eris.Client {
 
         if (!token) {
 
-            throw new KyurisError("MISSING_TOKEN");
+            throw new KyurisError(KyurisMessages.LIBRARY.MISSING_TOKEN);
 
         }
 
         if (!kyurisOptions.prefix || kyurisOptions.prefix.length === 0) {
 
-            throw new KyurisError("NO_PREFIX");
+            throw new KyurisError(KyurisMessages.LIBRARY.NO_PREFIX);
 
         }
 
@@ -46,9 +45,15 @@ class KyurisClient extends Eris.Client {
         this.commands = new Eris.Collection();
         this.events = new Set();
         this.kyurisHandler = new KyurisHandler(this)
-        this.kyurisOptions = kyurisOptions;
+        this.kyurisOptions = Object.assign({
+            enablePresence: false,
+            ignoreAllBots: true,
+            prefix: "@mention ",
+            ownerID: [],
+            presences: { name: "with Kyuris", type: 0, url: null },
+            status: "online"
+        }, kyurisOptions);
         this.prefix = kyurisOptions.prefix;
-        this.guildPrefixes = kyurisOptions.guildPrefixes;
         this.token = token;
 
         this.commandFiles = [];
