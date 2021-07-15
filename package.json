@@ -1,6 +1,6 @@
 {
   "name": "kyuris",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "An Easy-To-Use Framework For The Eris Library",
   "main": "Kyuris.js",
   "scripts": {
