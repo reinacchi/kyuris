@@ -15,10 +15,14 @@ class KyurisClient extends Eris.Client {
      * An Extended Of Eris Client
      * @param {String} token The bot's token
      * @param {Object} [kyurisOptions] Kyuris Options
+     * @param {String | Number} [kyurisOptions.embedColor] The color which will represent in embeds
+     * @param {Object} [kyurisOptions.enableCustomEvents] [DEPRECATED] Whether to use custom `ready` or `messageCreate` events. Note: 11/10 not recommended to use custom `messageCreate` or Kyuris won't able to handle messages and commands unless you know what you're doing
+     * @param {Boolean} [kyurisOptions.enableCustomEvents.messageCreate] [DEPRECATED] [NOT RECOMMENDED] Whether to use custom `messageCreate` event
+     * @param {Boolean} [kyurisOptions.enableCustomEvents.ready] [DEPRECATED] Whether to use custom `ready` event
      * @param {Boolean} [kyurisOptions.enablePresence=false] Whether to enable game presence or not
      * @param {Boolean} [kyurisOptions.ignoreAllBots=true] Whether to ignore all bot accounts or not
-     * @param {String | Array<String>} [kyurisOptions.prefix="@mention "] The bot prefix. Use an array of prefixes strings.
      * @param {Array<String>} [kyurisOptions.ownerID] An array of the bot's owner ID
+     * @param {String | Array<String>} [kyurisOptions.prefix="@mention "] The bot prefix. Use an array of prefixes strings
      * @param {Eris.ActivityPartial<Eris.BotActivityType>} [kyurisOptions.presences={}] A presence object
      * @param {String} [kyurisOptions.presences.name="with Kyuris"] The name of the bot's presence game
      * @param {Number} [kyurisOptions.presences.type=0] The type of game. 0 is playing, 1 is streaming (Twitch only), 2 is listening, 3 is watching, 5 is competing in
@@ -46,6 +50,8 @@ class KyurisClient extends Eris.Client {
         this.events = new Set();
         this.kyurisHandler = new KyurisHandler(this)
         this.kyurisOptions = Object.assign({
+            embedColor: "RANDOM",
+            enableCustomEvents: { messageCreate: false, ready: false },
             enablePresence: false,
             ignoreAllBots: true,
             prefix: "@mention ",
@@ -58,12 +64,6 @@ class KyurisClient extends Eris.Client {
 
         this.commandFiles = [];
         this.eventFiles = [];
-    
-        /* Connect to Discord */
-        this._addEventsListeners();
-        this._registerKyurisCommands();
-        this._registerKyurisEvents();
-        this.connect();
 
     }
 
@@ -74,10 +74,26 @@ class KyurisClient extends Eris.Client {
     async _addEventsListeners() {
 
         /* Fired When Client Is Ready*/
-        this.on("ready", this._readyEvent);
+        if (this.kyurisOptions.enableCustomEvents.ready) {
+
+            return null;
+
+        } else {
+
+            this.on("ready", this._readyEvent);
+
+        }
 
         /* Fired When A Message Is Create */
-        this.on("messageCreate", this._onMessageCreate);
+        if (this.kyurisOptions.enableCustomEvents.messageCreate) {
+
+            return null;
+
+        } else {
+
+            this.on("messageCreate", this._onMessageCreate);
+
+        }
 
     }
 
@@ -109,7 +125,7 @@ class KyurisClient extends Eris.Client {
 
                 if (this.prefix.length === 0) {
 
-                    throw new Error(`The array of passed prefixes mustn't be empty!`);
+                    throw new KyurisError(`The array of passed prefixes mustn't be empty!`);
               
                 }
 
@@ -275,11 +291,15 @@ class KyurisClient extends Eris.Client {
             if (kyurisEvent instanceof Event) {
 
                 if (!Constants.EVENTS.EVENT_NAMES.includes(kyurisEvent._eventName)) {
-                    throw new Error(`Unknown event called "${kyurisEvent._eventName}" in file "${kyurisEventFile}". Event names are case sensitive! Check https://abal.moe/Eris/docs/Client for an event overview.`)
+
+                    throw new KyurisError(`Unknown event called "${kyurisEvent._eventName}" in file "${kyurisEventFile}". Event names are case sensitive! Check https://abal.moe/Eris/docs/Client for an event overview.`)
+            
                 }
 
                 if (typeof kyurisEvent.run === 'undefined') {
-                    throw new Error(`Couldn't find main executor "run" in event file "${kyurisEventFile}"!`);
+
+                    throw new KyurisError(`Couldn't find main executor "run" in event file "${kyurisEventFile}"!`);
+              
                 }
 
                 this.events.add(kyurisEvent);
@@ -295,6 +315,21 @@ class KyurisClient extends Eris.Client {
         });
 
         Logger.success("KYURIS - EVENTS", `Successfully Loaded ${this.events.size} ${this.events.size === 1 || this.events.size === 0 ? "Event" : "Events"}`)
+
+    }
+
+    /**
+     * Run the Bot.
+     * This includes connecting the bot to Discord gateway and load all commands & events
+     * @returns {Promise<void>}
+     */
+    async run() {
+
+        /* Connect to Discord */
+        this._addEventsListeners();
+        this._registerKyurisCommands();
+        this._registerKyurisEvents();
+        this.connect().catch((err) => Logger.error("KYURIS - ERROR", `Error When Connecting: ${err}`));
 
     }
 
