@@ -27,22 +27,18 @@ Discord-Bot/
 ## `index.js` File:
 
 ```js
+
 const Kyuris = require("kyuris");
 
-class MyBot extends Kyuris.Client {
-
+class ExampleBot extends Kyuris.Client {
     constructor() {
 
         /* Replace TOKEN with your bot's token */
         /* Pro Tips: KyurisOptions supports for Eris.ClientOptions as well! Thus, there'll be 2 different Client options at once */
         super("TOKEN", {
-            prefix: "!", // The prefix property is required to pass
+            prefix: "!",
             ownerID: [
                 "YourID"
-            ],
-            intents: [
-                "guilds",
-                "guildsMessages"
             ],
             maxShards: "auto"
         });
@@ -54,7 +50,7 @@ class MyBot extends Kyuris.Client {
 
 }
 
-module.exports = new MyBot();
+module.exports = new ExampleBot();
 
 ```
 
@@ -69,7 +65,7 @@ const Kyuris = require("kyuris");
 
 class PingCommand extends Kyuris.Command {
 
-    constructor(); {
+    constructor() {
 
         super();
 
