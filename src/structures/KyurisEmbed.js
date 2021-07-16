@@ -109,7 +109,7 @@ class KyurisEmbed {
      * @param {ColorResolvable} color The Color of the embed
      * @returns {KyurisEmbed}
      */
-     setColor(color) {
+    setColor(color) {
         if (!color) throw new Error("Embed color shouldn't be empty!");
 
         if (typeof color === 'string') {
@@ -197,7 +197,7 @@ class KyurisEmbed {
      * @param {String} value The field value of the embed
      * @param {Boolean} [inline] Whether the field should be inline or not
      */
-    addField(name, value, inline=false) {
+    addField(name, value, inline = false) {
         if (this.fields.length >= 25) throw new RangeError("Embeds cannot hold more than 25 fields at once");
         if (typeof name !== "string") throw new TypeError(`Expected type 'string', received '${typeof name}'`);
         if (typeof value !== "string") throw new TypeError(`Expected type 'string', received '${typeof value}'`);
@@ -207,6 +207,16 @@ class KyurisEmbed {
 
         this.fields.push({ name, value, inline })
         return this;
+    }
+
+    /**
+     * Add multiple fields
+     * @param {Object} fields An object of field
+     */
+    addFields(...fields) {
+        this.fields.push(...fields);
+        return this;
+
     }
 
 }

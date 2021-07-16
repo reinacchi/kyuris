@@ -103,6 +103,8 @@ export class RichEmbed {
 
     public addField(name: string, value: string, inline?: boolean): RichEmbed;
 
+    public addFields(...fields: EmbedFieldsOptions[]): RichEmbed;
+
 }
 
 export const VERSION: string;
@@ -173,6 +175,14 @@ interface ErisClientEvents {
     warn: [message: string, id: number];
     webhooksUpdate: [data: Eris.WebhookData];
 
+
+}
+
+interface EmbedFieldsOptions {
+
+    inline?: boolean;
+    name?: string;
+    value?: string;
 
 }
 
