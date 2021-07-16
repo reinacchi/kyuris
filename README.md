@@ -121,6 +121,8 @@ class ShardPreReady extends Kyuris.Event {
 
 }
 
+module.exports = ShardPreReady();
+
 ```
 
 - **That's It!** Your bot is now fully setup and ready to go as long as you didn't forgot to save your files :P
