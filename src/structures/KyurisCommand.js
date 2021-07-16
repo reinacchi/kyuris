@@ -1,34 +1,45 @@
 const { KyurisError } = require("../errors/KyurisError");
+const KyurisMessages = require("../errors/KyurisMessages");
+const Kyuris = require("../../Kyuris");
+const Eris = require("eris");
 
 /**
- * Basic abstract Command class for command identification
+ * Kyuris Command Client
  */
- class kyurisCommand {
+class kyurisCommand {
 
-    run() {
+    constructor() {
 
-        throw new KyurisError("NO_COMMAND_LOGIC");
-    
+        this.aliases = [],
+        this.allowInDMs = true,
+        this.cooldown = 0,
+        this.meta = {
+            category: "",
+            description: "",
+            nsfwOnly: false,
+            ownerOnly: false,
+            usage: ""
+            },
+        this.nsfwOnly = false,
+        this.ownerOnly = false,
+        this.permissions = [],
+        this.subcommands = [],
+        this.userPermissions = []
+
     }
 
     /**
-     * Simple argument handler for getting tailed arguments with custom length and delimeters
-     * @param {string} string A string to be used 
-     * @param {string} delimeter A delimeter to split a text by 
-     * @param {number} count How often a string should be split by the delimeter before merging the contents
-     * @returns {string[]} An array of all collected arguments
+     * A run function to run the commands
+     * @param {Kyuris.Client} client Kyuris Client
+     * @param {Eris.Message<Eris.TextableChannel>} message Eris Message
+     * @param {Array<String>} args Message Arguments
      */
-    tailedArguments(string, delimeter, count) {
+    run(client, message, args) {
 
-        const parts  = string.split(delimeter);
-        const tail   = parts.slice(count).join(delimeter);
-        const result = parts.slice(0, count);
+        throw new KyurisError(KyurisMessages.LIBRARY.NO_COMMAND_LOGIC);
 
-        result.push(tail);
-
-        return result;
-    
     }
+
 }
 
 module.exports = kyurisCommand;

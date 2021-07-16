@@ -1,7 +1,7 @@
 const Eris = require("eris");
 const Util = require("./KyurisUtil");
 const Logger = require("./KyurisLogger")
-const Client = require("../KyurisClient");
+const Kyuris = require("../../Kyuris");
 const RichEmbed = require("../structures/KyurisEmbed");
 const KyurisError = require("../errors/KyurisError");
 const KyurisMessages = require("../errors/KyurisMessages");
@@ -11,21 +11,21 @@ class KyurisHandler {
 
     /**
      * Handle things
-     * @param {Client} kyuris Kyuris Client (Extended of Eris.Client)
+     * @param {Kyuris.Client} kyuris Kyuris Client (Extended of Eris.Client)
      */
     constructor(kyuris) {
 
         this.kyuris = kyuris;
         this.cooldowns = new Eris.Collection();
-        this.defaultPermissions = ['viewChannel', 'sendMessages'];
+        this.defaultPermissions = ["readMessageHistory", "sendMessages", "viewChannel"];
 
     }
 
 
     /**
      * Handle messages & commands
-     * @param {Eris.Message} message The message object emitted from Discord 
-     * @param {Eris.Collection} commands A collection containing all registered commands 
+     * @param {Eris.Message<Eris.TextableChannel} message The message object emitted from Discord 
+     * @param {Eris.Collection<Kyuris.Command>} commands A collection containing all registered commands 
      */
     async handleMessage(message, commands) {
 
@@ -103,7 +103,7 @@ class KyurisHandler {
 
                 let onlyNSFWEmbed = new RichEmbed()
                     .setDescription(KyurisMessages.LIBRARY.NOT_IN_NSFW.replace("{command}", command.name))
-                    .setColor("RED")
+                    .setColor(kyurisConfig.embedColor || "RED");
 
                 return this.kyuris.createMessage(message.channel.id, { embed: onlyNSFWEmbed }).catch((err) => {
 
@@ -136,7 +136,7 @@ class KyurisHandler {
 
                 const onCooldownEmbed = new RichEmbed()
                         .setDescription(KyurisMessages.LIBRARY.ON_COOLDOWN.replace("{timeLeft}", timeLeftFormatted).replace("{command}", command.name))
-                        .setColor("RANDOM")
+                        .setColor(kyurisConfig.embedColor || "RANDOM")
 
                     return this.kyuris.createMessage(message.channel.id, { embed: onCooldownEmbed }).catch((err) => {
 
