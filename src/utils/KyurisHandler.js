@@ -181,7 +181,7 @@ class KyurisHandler {
 
                         const subcommandName = commandArgs.shift();
 
-                        command[subcommandName.toLowerCase()](message, commandArgs, this.kyuris).catch((err) => {
+                        command[subcommandName.toLowerCase()](this.kyuris, message, commandArgs).catch((err) => {
 
                             Logger.error('KYURIS - SUBCOMMAND EXECUTION ERROR', `Command ${command.name} couldn't be executed due to: ${err}`);
 
@@ -189,7 +189,7 @@ class KyurisHandler {
 
                     } else {
 
-                        command.run(message, commandArgs, this.kyuris).catch((err) => {
+                        command.run(this.kyuris, message, commandArgs).catch((err) => {
 
                             Logger.error('COMMAND EXECUTION ERROR', `Command ${command.name} couldn't be executed due to: ${err}`);
                         });
