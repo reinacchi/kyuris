@@ -14,6 +14,9 @@ class ExampleBot extends Kyuris.Client {
             ownerID: ["OwnerID"]
         });
 
+        /* Run the bot */
+        this.run();
+
     }
 
 }
