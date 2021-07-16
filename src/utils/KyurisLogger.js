@@ -1,7 +1,7 @@
 const chalk = require("chalk");
 const moment = require("moment");
 
-class Logger {
+class KyurisLogger {
     
     /**
      * Custom Log
@@ -69,4 +69,4 @@ class Logger {
 
 }
 
-module.exports = Logger;
+module.exports = KyurisLogger;
