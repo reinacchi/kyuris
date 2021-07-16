@@ -23,7 +23,7 @@ class kyurisCommand {
         this.nsfwOnly = false,
         this.ownerOnly = false,
         this.permissions = [],
-        this.subcommands = [],
+        this.subcommands = null,
         this.userPermissions = []
 
     }
