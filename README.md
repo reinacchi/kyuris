@@ -1,10 +1,10 @@
 # Kyuris
 
-**Kyuris** is a lightweight, easy-to-use framework for the **[Eris](https://npmjs.com/package/eris)** library.
+**Kyuris** is a lightweight, easy-to-use framework built specially for the **[Eris](https://npmjs.com/package/eris)** library.
 
 # Example
 
-- **Kyuris** supports any kinda of project structure. With this way, it's much customizable and you can still able to follow your own scripting style! 
+- **Kyuris** supports any kind of project structure since **Kyuris** is made to be customizable for developers to code in their own style ✨
 
 **Note:** It's not needed setup `messageCreate` and `ready` events as **Kyuris** has already handle them in order to works. 
 
@@ -46,6 +46,9 @@ class MyBot extends Kyuris.Client {
             ],
             maxShards: "auto"
         });
+
+        /* Run the bot */
+        this.run();
 
     }
 
@@ -126,6 +129,13 @@ class ShardPreReady extends Kyuris.Event {
 
 - **That's It!** Your bot is now fully setup and ready to go as long as you didn't forgot to save your files :P
 
+# Why Kyuris?
+
+- Lightweight
+- Easy-To-Use
+- Up-To-Date
+- Customizable Behaviour
+
 # Resources Links
 
 - **Kyuris' Official Docs** is currently W.I.P.
@@ -134,8 +144,9 @@ class ShardPreReady extends Kyuris.Event {
 
 # ToDo List:
 
-- Custom `ready` & `messageCreate` Events (`messageCreate` event is where Kyuris handles messages and commands. Making a custom `messageCreate` event **isn't recommended** at all unless you know what you're doing.)
-- More properties
+- 🚧 Proper Custom `ready` & `messageCreate` Events (`messageCreate` event is where Kyuris handles messages and commands (Making a custom `messageCreate` event **isn't recommended** at all unless you know what you're doing.)
+- ✖ Cluster Client
+- 🚧 More properties
 
 # License
 
