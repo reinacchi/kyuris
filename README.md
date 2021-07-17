@@ -105,13 +105,13 @@ class ShardPreReady extends Kyuris.Event {
 
     constructor() {
 
-        /* Eris's Events. See https://abal.moe/Eris/Client and head to the Events section for more */
+        /* Eris's Events. See https://abal.moe/Eris/Client for an event overview */
         super("shardPreReady");
 
     }
 
     /**
-     * @param {number} id The shard ID
+     * @param {number} id The ID of the shard
      */
     async run(id) {
 
@@ -121,7 +121,7 @@ class ShardPreReady extends Kyuris.Event {
 
 }
 
-module.exports = ShardPreReady();
+module.exports = new ShardPreReady();
 
 ```
 
