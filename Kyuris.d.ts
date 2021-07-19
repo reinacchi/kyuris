@@ -33,7 +33,7 @@ export class Command {
     public nsfwOnly?: boolean;
     public ownerOnly?: boolean;
     public permissions?: Array<string>;
-    public subcommands?: Array<string>;
+    public subcommands?: Array<string> | null;
     public userPermissions?: Array<string>;
 
     public run(client: Client, message: Eris.Message<Eris.TextableChannel>, args: Array<string>): Promise<void>;
@@ -132,7 +132,7 @@ interface ErisClientEvents {
     guildBanRemove: [guild: Eris.Guild, user: Eris.User];
     guildCreate: [guild: Eris.Guild];
     guildDelete: [guild: Eris.Guild];
-    guildEmojisUpdate: [guild: Eris.Guild, emojis: Array, oldEmojis: Array | null];
+    guildEmojisUpdate: [guild: Eris.Guild, emojis: Array<any>, oldEmojis: Array<any> | null];
     guildMemberAdd: [guild: Eris.Guild, member: Eris.Member];
     guildMemberChunk: [guild: Eris.Guild, members: Array<Eris.Member>];
     guildMemberRemove: [guild: Eris.Guild, member: Eris.Member | object];
