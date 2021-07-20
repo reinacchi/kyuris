@@ -23,7 +23,7 @@ class KyurisClient extends Eris.Client {
      * @param {Boolean} [kyurisOptions.ignoreAllBots=true] Whether to ignore all bot accounts or not
      * @param {Array<String>} [kyurisOptions.ownerID] An array of the bot's owner ID
      * @param {String | Array<String>} [kyurisOptions.prefix="@mention "] The bot prefix. Use an array of prefixes strings
-     * @param {Eris.ActivityPartial<Eris.BotActivityType>} [kyurisOptions.presences={}] A presence object
+     * @param {Eris.ActivityPartial<Eris.BotActivityType>} [kyurisOptions.presences=null] A presence object
      * @param {String} [kyurisOptions.presences.name="with Kyuris"] The name of the bot's presence game
      * @param {Number} [kyurisOptions.presences.type=0] The type of game. 0 is playing, 1 is streaming (Twitch only), 2 is listening, 3 is watching, 5 is competing in
      * @param {String} [kyurisOptions.presences.url=null] The url of the bot's presence game
