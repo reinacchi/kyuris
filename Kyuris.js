@@ -5,5 +5,6 @@ module.exports = {
     Command: require("./src/structures/KyurisCommand"),
     Event: require("./src/structures/KyurisEvent"),
     Logger: require("./src/utils/KyurisLogger"),
-    RichEmbed: require("./src/structures/KyurisEmbed")
+    RichEmbed: require("./src/structures/KyurisEmbed"),
+    VERSION: require("./package.json").version
 }

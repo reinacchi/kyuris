@@ -1,7 +1,7 @@
 const Eris = require("eris");
 const Util = require("./KyurisUtil");
 const Logger = require("./KyurisLogger")
-const Client = require("../KyurisClient");
+const Kyuris = require("../../Kyuris");
 const RichEmbed = require("../structures/KyurisEmbed");
 const KyurisError = require("../errors/KyurisError");
 const KyurisMessages = require("../errors/KyurisMessages");
@@ -11,21 +11,21 @@ class KyurisHandler {
 
     /**
      * Handle things
-     * @param {Client} kyuris Kyuris Client (Extended of Eris.Client)
+     * @param {Kyuris.Client} kyuris Kyuris Client (Extended of Eris.Client)
      */
     constructor(kyuris) {
 
         this.kyuris = kyuris;
         this.cooldowns = new Eris.Collection();
-        this.defaultPermissions = ['viewChannel', 'sendMessages'];
+        this.defaultPermissions = ["readMessageHistory", "sendMessages", "viewChannel"];
 
     }
 
 
     /**
      * Handle messages & commands
-     * @param {Eris.Message} message The message object emitted from Discord 
-     * @param {Eris.Collection} commands A collection containing all registered commands 
+     * @param {Eris.Message<Eris.TextableChannel} message The message object emitted from Discord 
+     * @param {Eris.Collection<Kyuris.Command>} commands A collection containing all registered commands 
      */
     async handleMessage(message, commands) {
 
@@ -91,7 +91,7 @@ class KyurisHandler {
             }
         }
 
-        if (command.owner && !kyurisConfig.ownerID.includes(message.author.id)) {
+        if (command.ownerOnly && !kyurisConfig.ownerID.includes(message.author.id)) {
 
             return this.kyuris.createMessage(message.channel.id, { content: KyurisMessages.LIBRARY.ACCESS_DENIED });
 
@@ -99,11 +99,11 @@ class KyurisHandler {
 
         if (message.channel.type === 0) {
 
-            if (command.nsfw && !message.channel.nsfw) {
+            if (command.nsfwOnly && !message.channel.nsfw) {
 
                 let onlyNSFWEmbed = new RichEmbed()
                     .setDescription(KyurisMessages.LIBRARY.NOT_IN_NSFW.replace("{command}", command.name))
-                    .setColor("RED")
+                    .setColor(kyurisConfig.embedColor || "RED");
 
                 return this.kyuris.createMessage(message.channel.id, { embed: onlyNSFWEmbed }).catch((err) => {
 
@@ -136,7 +136,7 @@ class KyurisHandler {
 
                 const onCooldownEmbed = new RichEmbed()
                         .setDescription(KyurisMessages.LIBRARY.ON_COOLDOWN.replace("{timeLeft}", timeLeftFormatted).replace("{command}", command.name))
-                        .setColor("RANDOM")
+                        .setColor(kyurisConfig.embedColor || "RANDOM")
 
                     return this.kyuris.createMessage(message.channel.id, { embed: onCooldownEmbed }).catch((err) => {
 
@@ -181,7 +181,7 @@ class KyurisHandler {
 
                         const subcommandName = commandArgs.shift();
 
-                        command[subcommandName.toLowerCase()](message, commandArgs, this.kyuris).catch((err) => {
+                        command[subcommandName.toLowerCase()](this.kyuris, message, commandArgs).catch((err) => {
 
                             Logger.error('KYURIS - SUBCOMMAND EXECUTION ERROR', `Command ${command.name} couldn't be executed due to: ${err}`);
 
@@ -189,7 +189,7 @@ class KyurisHandler {
 
                     } else {
 
-                        command.run(message, commandArgs, this.kyuris).catch((err) => {
+                        command.run(this.kyuris, message, commandArgs).catch((err) => {
 
                             Logger.error('COMMAND EXECUTION ERROR', `Command ${command.name} couldn't be executed due to: ${err}`);
                         });

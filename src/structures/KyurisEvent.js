@@ -1,11 +1,10 @@
-const Eris = require("eris");
-const KyurisError = require("../errors/KyurisError");
+"use-strict";
 
 class KyurisEvent {
 
     /**
      * Create an instance of Kyuris Event
-     * @param {Eris.ClientEvents} eventName An Eris event.
+     * @param {String} eventName An Eris event.
      */
     constructor(eventName) {
 
