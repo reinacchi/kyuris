@@ -15,6 +15,7 @@ export class Client extends Eris.Client {
     public events: Set<Event>;
     public kyurisHandler: KyurisHandler;
     public kyurisOptions: KyurisClientOptions;
+    public prefix: string | Array<string>;
     public token: string;
 
     public run(): Promise<void>;
@@ -46,7 +47,7 @@ export class Event {
 
     private _eventName: string;
 
-    public run(): Promise<void>;
+    public run(...args): Promise<void>;
 }
 
 export class KyurisHandler {
@@ -115,12 +116,12 @@ interface ErisClientEvents {
     callDelete: [call: Eris.Call];
     callRing: [call: Eris.Call];
     callUpdate: [call: Eris.Call, oldCall: Eris.OldCall];
-    channelCreate: [channel: Eris.TextChannel | Eris.VoiceChannel | Eris.CategoryChannel | Eris.StoreChannel | Eris.NewsChannel | Eris.GuildChannel | Eris.PrivateChannel | Eris.StageChannel];
-    channelDelete: [channel: Eris.TextChannel | Eris.PrivateChannel | Eris.NewsChannel | Eris.VoiceChannel | Eris.StageChannel];
-    channelPinUpdate: [channel: Eris.TextChannel | Eris.PrivateChannel | Eris.NewsChannel, timestamp: number, oldTimestamp: number];
+    channelCreate: [channel: Eris.AnyChannel];
+    channelDelete: [channel: Eris.AnyChannel];
+    channelPinUpdate: [channel: Eris.AnyGuildChannel, timestamp: number, oldTimestamp: number];
     channelRecipientAdd: [channel: Eris.GroupChannel, user: Eris.User];
     channelRecipientRemove: [channel: Eris.GroupChannel, user: Eris.User];
-    channelUpdate: [channel: Eris.TextChannel | Eris.VoiceChannel | Eris.CategoryChannel | Eris.StoreChannel | Eris.NewsChannel | Eris.GuildChannel | Eris.PrivateChannel | Eris.StageChannel, oldChannel: Eris.OldGuildChannel];
+    channelUpdate: [channel: Eris.AnyChannel, oldChannel: Eris.OldGuildChannel];
     connect: [id: number];
     debug: [message: string, id: number];
     disconnect: [];
@@ -164,13 +165,13 @@ interface ErisClientEvents {
     shardPreReady: [id: number];
     shardReady: [id: number];
     shardResume: [id: number];
-    typingStart: [channel: Eris.TextChannel | Eris.PrivateChannel | Eris.NewsChannel | object, user: Eris.User | object, member: Eris.Member | null];
+    typingStart: [channel: Eris.AnyGuildChannel | object, user: Eris.User | object, member: Eris.Member | null];
     unavailableGuildCreate: [guild: Eris.UnavailableGuild];
     unknown: [packet: Eris.RawPacket, id: number];
     userUpdate: [user: Eris.User, oldUser: object];
-    voiceChannelJoin: [member: Eris.Member, newChannel: Eris.StageChannel | Eris.VoiceChannel];
-    voiceChannelLeave: [member: Eris.Member, oldChannel: Eris.StageChannel | Eris.VoiceChannel];
-    voiceChannelSwitch: [member: Eris.Member, newChannel: Eris.StageChannel | Eris.VoiceChannel, oldChannel: Eris.StageChannel | Eris.VoiceChannel];
+    voiceChannelJoin: [member: Eris.Member, newChannel: Eris.AnyVoiceChannel];
+    voiceChannelLeave: [member: Eris.Member, oldChannel: Eris.AnyVoiceChannel];
+    voiceChannelSwitch: [member: Eris.Member, newChannel: Eris.AnyVoiceChannel, oldChannel: Eris.AnyVoiceChannel];
     voiceStateUpdate: [member: Eris.Member, oldState: Eris.OldVoiceState];
     warn: [message: string, id: number];
     webhooksUpdate: [data: Eris.WebhookData];
@@ -181,8 +182,8 @@ interface ErisClientEvents {
 interface EmbedFieldsOptions {
 
     inline?: boolean;
-    name?: string;
-    value?: string;
+    name: string;
+    value: string;
 
 }
 
